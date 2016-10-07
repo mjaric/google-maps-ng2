@@ -24,4 +24,4 @@ $ npm run lint
 
 ## License
 
-MIT © [Milan Jaric](milan.jaric@gmail.com)
+MIT © Milan Jaric
