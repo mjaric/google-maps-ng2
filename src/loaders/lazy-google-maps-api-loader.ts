@@ -77,7 +77,7 @@ export class LazyGoogleMapsApiLoader extends BaseGoogleMapsApiLoader {
 
     private createPromise(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            const callbackName: string = `_gmi${new Date().getTime()}`;
+            const callbackName = `_gmi${new Date().getTime()}`;
 
             (<any>window)[callbackName] = resolve;
             document.body.appendChild(this.createScript(callbackName, reject));
@@ -87,10 +87,10 @@ export class LazyGoogleMapsApiLoader extends BaseGoogleMapsApiLoader {
     private createScript(callbackName: string, onError: (error: Event) => void): HTMLScriptElement {
         let script = document.createElement('script');
 
-        script.type    = 'text/javascript';
-        script.src     = this.createScriptUrl(callbackName);
-        script.async   = true;
-        script.defer   = true;
+        script.type = 'text/javascript';
+        script.src = this.createScriptUrl(callbackName);
+        script.async = true;
+        script.defer = true;
         script.onerror = onError;
 
         return script;
@@ -104,11 +104,8 @@ export class LazyGoogleMapsApiLoader extends BaseGoogleMapsApiLoader {
         switch (this._options.protocol) {
             case ScriptLoaderProtocol.AUTO:
                 return '';
-
             case ScriptLoaderProtocol.HTTP:
                 return 'http:';
-
-            case ScriptLoaderProtocol.HTTPS:
             default:
                 return 'https:';
         }
@@ -138,9 +135,10 @@ export class LazyGoogleMapsApiLoader extends BaseGoogleMapsApiLoader {
 
         const params: string[] = [];
 
-        for (let key in queryParams) {
-            params.push(`${key}=${queryParams[key]}`);
-        }
+        Object.keys(queryParams)
+            .forEach(key => {
+                params.push(`${key}=${queryParams[key]}`);
+            });
 
         return `?${params.join('&')}`;
     }

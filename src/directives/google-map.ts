@@ -15,7 +15,7 @@ import {
 import {Subscription} from 'rxjs/Subscription';
 
 import {MapsManager} from '../services/maps-manager';
-import {BaseGoogleMapComponent, IOptionalSetMapMethod} from "./base-google-map-component";
+import {BaseGoogleMapComponent, IOptionalSetMapMethod} from './base-google-map-component';
 
 
 @Component({
@@ -36,6 +36,13 @@ export class GoogleMapComponent implements OnDestroy, OnInit, AfterContentInit {
     @ContentChildren(forwardRef(() => BaseGoogleMapComponent), {})
     private _mapComponents: QueryList<BaseGoogleMapComponent<IOptionalSetMapMethod>>;
     private _mapComponentsSubscriptions: Subscription;
+
+    /**
+     * Should map auto resize bounds to current set of markers
+     * @type {boolean} default is true
+     */
+    @Input()
+    public autoFitMarkers: boolean = true;
 
     constructor(@Attribute('name')
                 private _name: string,
@@ -152,13 +159,6 @@ export class GoogleMapComponent implements OnDestroy, OnInit, AfterContentInit {
      */
 
     /**
-     * Should map auto resize bounds to current set of markers
-     * @type {boolean} default is true
-     */
-    @Input()
-    public autoFitMarkers: boolean = true;
-
-    /**
      * Enables/disables all default UI.
      */
     @Input()
@@ -255,13 +255,13 @@ export class GoogleMapComponent implements OnDestroy, OnInit, AfterContentInit {
             center: <google.maps.LatLng><any>{lat: 0, lng: 0},
             zoom: 5,
             backgroundColor: this._mapBackgroundColor
-        }
+        };
     }
 
     private resetMapBounds(bounds: google.maps.LatLngBounds) {
-        this._map.then(map=> {
+        this._map.then(map => {
             map.fitBounds(bounds);
-        })
+        });
     }
 
     fitBounds(bounds: google.maps.LatLngBounds) {

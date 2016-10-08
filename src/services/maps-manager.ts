@@ -14,7 +14,7 @@ const DEFAULT_MAP_OPTIONS: google.maps.MapOptions = {
     mapTypeControl: false,
     streetViewControl: false
 };
-
+const noop = () => {};
 @Injectable()
 export class MapsManager {
 
@@ -22,38 +22,40 @@ export class MapsManager {
     private _browserLocationPromise: Promise<Coordinates>;
 
     constructor(private loader: BaseGoogleMapsApiLoader) {
-        this.getBrowserLocation().then(()=>{});
+        // check browser location
+        this.getBrowserLocation()
+            .then(noop);
         // preload map immediately
-        this.loader.load().then(()=>{});
+        this.loader
+            .load()
+            .then(noop);
     }
 
     createMarker(options?: google.maps.MarkerOptions): Promise<google.maps.Marker> {
         return this
             .loader
             .load()
+            .then(() => new google.maps.Marker(options));
+    }
+
+    createDirections(options?: google.maps.DirectionsRendererOptions): Promise<google.maps.DirectionsRenderer> {
+        return this.loader
+            .load()
             .then(() => {
-                return new google.maps.Marker(options);
+                return new Promise((resolve) => {
+                    resolve(new google.maps.DirectionsRenderer(options));
+                });
             });
     }
 
-    createDirections(options?:google.maps.DirectionsRendererOptions):Promise<google.maps.DirectionsRenderer>{
-        return this.loader
-            .load()
-            .then(()=>{
-                return new Promise((resolve) => {
-                    resolve(new google.maps.DirectionsRenderer(options))
-                })
-            })
-    }
-
-    getDirections(origin:google.maps.LatLngLiteral | Coordinates | {latitude: number, longitude: number},
-                      destination:google.maps.LatLngLiteral | Coordinates | {latitude: number, longitude: number}): Promise<google.maps.DirectionsResult> {
+    getDirections(origin: google.maps.LatLngLiteral | Coordinates | {latitude: number, longitude: number},
+                  destination: google.maps.LatLngLiteral | Coordinates | {latitude: number, longitude: number}): Promise<google.maps.DirectionsResult> {
         return this
             .loader
             .load()
             .then(() => {
                 let svc = new google.maps.DirectionsService();
-                return new Promise((resolve, reject)=>{
+                return new Promise((resolve, reject) => {
                     let request = {
                         origin: new google.maps.LatLng(
                             (<google.maps.LatLngLiteral>origin).lat || (<Coordinates>origin).latitude,
@@ -65,16 +67,16 @@ export class MapsManager {
                         ),
                         travelMode: google.maps.TravelMode.DRIVING
                     };
-                    svc.route(request, (result:google.maps.DirectionsResult, status:google.maps.DirectionsStatus) =>{
-                        if (status == google.maps.DirectionsStatus.OK) {
+                    svc.route(request, (result: google.maps.DirectionsResult, status: google.maps.DirectionsStatus) => {
+                        if (status === google.maps.DirectionsStatus.OK) {
                             resolve(result);
-                        }else{
-                            console.error({message: "fail to get directions", status, result});
+                        } else {
+                            console.error({message: 'fail to get directions', status, result});
                             reject({status, result});
                         }
-                    })
+                    });
                 });
-            })
+            });
     }
 
     // todo: getDirections()
@@ -84,7 +86,7 @@ export class MapsManager {
             .load()
             .then(() => {
                 return this.getBrowserLocation()
-                    .then((coords: Coordinates)=> {
+                    .then((coords: Coordinates) => {
                         options = Object.assign({}, options, DEFAULT_MAP_OPTIONS, {
                             center: new google.maps.LatLng(coords.latitude, coords.longitude),
                             zoom: 8
@@ -96,7 +98,9 @@ export class MapsManager {
     }
 
     getMap(name: string): Promise<google.maps.Map> {
-        return this.loader.load().then(() => this._maps.get(name));
+        return this.loader
+            .load()
+            .then(() => this._maps.get(name));
     }
 
     addMap(name: string, map: google.maps.Map): void {
@@ -107,8 +111,8 @@ export class MapsManager {
         return this._maps.delete(name);
     }
 
-    createAutocomplete(input:ElementRef, options:google.maps.places.AutocompleteOptions):Promise<google.maps.places.Autocomplete> {
-        return this.loader.load().then(()=>{
+    createAutocomplete(input: ElementRef, options: google.maps.places.AutocompleteOptions): Promise<google.maps.places.Autocomplete> {
+        return this.loader.load().then(() => {
             return new google.maps.places.Autocomplete(input.nativeElement, options);
         });
     }
@@ -118,38 +122,38 @@ export class MapsManager {
             return this._browserLocationPromise;
         }
 
-        return this._browserLocationPromise = new Promise<Coordinates>((resolve, reject)=> {
-            if (location.protocol === "https" && navigator.geolocation) {
+        return this._browserLocationPromise = new Promise<Coordinates>((resolve) => {
+            if (location.protocol === 'https' && navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    (success: {coords: Coordinates, timestamp: number})=> {
+                    (success: {coords: Coordinates, timestamp: number}) => {
                         resolve(success.coords);
-                    }, (error)=> {
+                    }, (error) => {
                         console.error(error);
                         if (error.code !== PositionError.PERMISSION_DENIED) {
-                            console.warn(`Looks like permission is accepted but error encounter ${error.message}`);
+                            console.warn(`Permission is accepted but error encounter with message: ${error.message}`);
                         }
                         // if user didn't answer return default
-                        resolve(defaultCoords)
+                        resolve(defaultCoords);
                     });
             } else {
                 // if browser do not support location API return default (NYC)
-                resolve(defaultCoords)
+                resolve(defaultCoords);
             }
         });
 
     }
 
-    calculateMapBounds(markers:Array<Coordinates> = []) {
-        return this.loader.load().then(()=>{
-            return new Promise<google.maps.LatLngBounds>((resolve, reject)=>{
-                let bounds:google.maps.LatLngBounds;
+    calculateMapBounds(markers: Array<Coordinates> = []) {
+        return this.loader.load().then(() => {
+            return new Promise<google.maps.LatLngBounds>((resolve, reject) => {
+                let bounds: google.maps.LatLngBounds;
 
-                if(markers && markers.length > 1){
+                if (markers && markers.length > 1) {
                     bounds = new google.maps.LatLngBounds(new google.maps.LatLng(markers[0].latitude, markers[0].longitude));
-                }else{
-                    reject({error: "There is no markers in markers array", centerTo:defaultCoords});
+                } else {
+                    reject({error: 'There is no markers in markers array', centerTo: defaultCoords});
                 }
-                for(let i = 1; i < markers.length; i++){
+                for (let i = 1; i < markers.length; i++) {
                     let marker = markers[i];
                     bounds.extend(new google.maps.LatLng(marker.latitude, marker.longitude));
                 }
@@ -157,16 +161,4 @@ export class MapsManager {
             });
         });
     }
-
-    private calculateBounds(sw: Coordinates, ne: Coordinates):Array<Coordinates> {
-        return [<Coordinates>{
-            latitude: Math.min(sw.latitude, ne.latitude),
-            longitude: Math.min(sw.longitude, ne.longitude),
-        },<Coordinates>{
-            latitude: Math.max(sw.latitude, ne.latitude),
-            longitude: Math.max(sw.longitude, ne.longitude),
-        }];
-    }
-
-
 }

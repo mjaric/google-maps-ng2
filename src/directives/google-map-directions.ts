@@ -1,23 +1,18 @@
 /**
  * Created by mjaric on 9/30/16.
  */
-
-/**
- * Created by mjaric on 9/28/16.
- */
 import {Directive, Input, Output, OnInit, OnDestroy, EventEmitter, forwardRef} from '@angular/core';
 import {MapsManager} from '../services/maps-manager';
-import {BaseGoogleMapComponent} from "./base-google-map-component";
-
+import {BaseGoogleMapComponent} from './base-google-map-component';
 
 
 @Directive({
     selector: 'google-map-directions',
-    providers: [{provide: BaseGoogleMapComponent, useExisting:forwardRef(() => GoogleMapDirectionsDirective)}]
+    providers: [{provide: BaseGoogleMapComponent, useExisting: forwardRef(() => GoogleMapDirectionsDirective)}]
 })
 export class GoogleMapDirectionsDirective extends BaseGoogleMapComponent<google.maps.DirectionsRenderer> implements OnInit, OnDestroy {
 
-    private _routeColor: string = "#ff9702";
+    private _routeColor: string = '#ff9702';
 
 
     private _origin: any;
@@ -36,9 +31,9 @@ export class GoogleMapDirectionsDirective extends BaseGoogleMapComponent<google.
                     .getDirections(this._origin, this._destination)
                     .then(directions => {
                         this.proxy
-                            .then(renderer=> {
+                            .then(renderer => {
                                 renderer.setDirections(directions);
-                            })
+                            });
                     });
             }
         }
@@ -59,7 +54,7 @@ export class GoogleMapDirectionsDirective extends BaseGoogleMapComponent<google.
                         this.proxy
                             .then(renderer=> {
                                 renderer.setDirections(directions);
-                            })
+                            });
                     });
             }
         }
@@ -67,16 +62,21 @@ export class GoogleMapDirectionsDirective extends BaseGoogleMapComponent<google.
 
     /**
      * Sets the color of rendered polygonal line as route in map view
-     * @param value is as string e.g. "#ff9702". Default value is "#ff9702"
+     * @param value is as string e.g. '#ff9702'. Default value is '#ff9702'
      */
     @Input()
     set routeColor(value: string) {
-        this._routeColor = value || "#ff9702";
-        this.proxy.then(r=> {
-            r.setOptions(this.getOptions());
+        this._routeColor = value || '#ff9702';
+        this.proxy.then(directions => {
+            directions.setOptions(this.getOptions());
         });
     }
 
+    /**
+     * This event is fired when the directions route changes.
+     */
+    @Output()
+    directions_changed: EventEmitter<void> = new EventEmitter<void>();
     /**
      * By default, the input map is centered and zoomed to the bounding box of this set of directions.
      * If this option is set to true, the viewport is left unchanged, unless the map's center and zoom were never set.
@@ -89,17 +89,10 @@ export class GoogleMapDirectionsDirective extends BaseGoogleMapComponent<google.
         super();
     }
 
-    /**
-     * This event is fired when the directions route changes.
-     */
-    @Output()
-    directions_changed: EventEmitter<void> = new EventEmitter<void>();
-
     /*
      * Internal logic
      * **********************************************************
      */
-
 
 
     ngOnInit(): void {
@@ -119,7 +112,7 @@ export class GoogleMapDirectionsDirective extends BaseGoogleMapComponent<google.
     }
 
     private bindEvents(directions: google.maps.DirectionsRenderer) {
-        directions.addListener("directions_changed", (e) => this.directions_changed.emit(e))
+        directions.addListener('directions_changed', (e) => this.directions_changed.emit(e));
     }
 
     private getOptions(): google.maps.DirectionsRendererOptions {

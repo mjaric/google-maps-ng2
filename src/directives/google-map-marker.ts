@@ -3,24 +3,14 @@
  */
 import {Directive, Input, Output, OnInit, OnDestroy, EventEmitter, forwardRef} from '@angular/core';
 import {MapsManager} from '../services/maps-manager';
-import {BaseGoogleMapComponent} from "./base-google-map-component";
-
+import {BaseGoogleMapComponent} from './base-google-map-component';
 
 
 @Directive({
     selector: 'google-map-marker',
-    providers: [{provide: BaseGoogleMapComponent, useExisting:forwardRef(() => GoogleMapMakerDirective)}]
+    providers: [{provide: BaseGoogleMapComponent, useExisting: forwardRef(() => GoogleMapMakerDirective)}]
 })
-export class GoogleMapMakerDirective  extends BaseGoogleMapComponent<google.maps.Marker> implements OnInit, OnDestroy {
-
-    /**
-     * Delay marker initialization
-     */
-    private _delay: number;
-
-    constructor(private _mapsManager: MapsManager) {
-        super();
-    }
+export class GoogleMapMakerDirective extends BaseGoogleMapComponent<google.maps.Marker> implements OnInit, OnDestroy {
 
     /*
      * Outputs events
@@ -87,6 +77,7 @@ export class GoogleMapMakerDirective  extends BaseGoogleMapComponent<google.maps
             marker.setPosition(position);
         });
     }
+
     /**
      * If true, the marker receives mouse and touch events.
      * Default value is true.
@@ -143,10 +134,15 @@ export class GoogleMapMakerDirective  extends BaseGoogleMapComponent<google.maps
         this.proxy.then(marker => marker.setAnimation(<google.maps.Animation>value));
     }
 
-    @Input("delay")
+    @Input('delay')
     set setDelay(value: number) {
         this.delay = value;
     }
+
+    constructor(private _mapsManager: MapsManager) {
+        super();
+    }
+
 
     /*
      * Internal logic
@@ -158,7 +154,7 @@ export class GoogleMapMakerDirective  extends BaseGoogleMapComponent<google.maps
         this._mapsManager.createMarker()
             .then(marker => {
                 this.bindEvents(marker);
-                this.proxyResolver(marker)
+                this.proxyResolver(marker);
             });
     }
 
