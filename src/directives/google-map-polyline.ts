@@ -16,7 +16,9 @@ export class GoogleMapPolylineDirective extends BaseGoogleMapComponent<google.ma
         this.proxy.then( o => o.setOptions(value));
     }    
     
-    constructor(private _mapsManager:MapsManager){}
+    constructor(private _mapsManager:MapsManager){
+        super();
+    }
     
     ngOnInit():void {
         this._mapsManager
