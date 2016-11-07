@@ -30,6 +30,12 @@ export class MapsManager {
             .load()
             .then(noop);
     }
+    
+    onApiLoad():Promise<void> {
+        return this
+            .loader
+            .load()
+    }
 
     createMarker(options?: google.maps.MarkerOptions): Promise<google.maps.Marker> {
         return this
