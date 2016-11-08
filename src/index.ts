@@ -1,4 +1,4 @@
-import {NgModule, ModuleWithProviders, Provider} from '@angular/core';
+import {NgModule, ModuleWithProviders, Provider, APP_INITIALIZER} from '@angular/core';
 import {GOOGLE_MAPS_DIRECTIVES} from './directives';
 import {GOOGLE_MAPS_PROVIDERS} from './services';
 import {LoaderOptions, LAZY_LOADER_OPTIONS, LazyGoogleMapsApiLoader} from "./loaders/lazy-google-maps-api-loader";
@@ -20,8 +20,19 @@ export default {
 })
 export class GoogleMapsNg2Module {
   static forRoot(config?: LoaderOptions): ModuleWithProviders {
+
+    let GoogleMapsModuleInitializer = {
+      provide: APP_INITIALIZER,
+      useFactory: (loader:BaseGoogleMapsApiLoader)=>{
+        return () => loader.load();
+      },
+      deps: [BaseGoogleMapsApiLoader],
+      multi: true
+    };
+
     const providers: Provider[] =
         [
+          GoogleMapsModuleInitializer,
           {provide: MapsManager, useClass: MapsManager}
         ];
     if (config) {
