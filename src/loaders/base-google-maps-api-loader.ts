@@ -3,5 +3,5 @@
  */
 
 export abstract class BaseGoogleMapsApiLoader {
-    abstract load(): Promise<void>;
+  abstract load(): Promise<void>;
 }

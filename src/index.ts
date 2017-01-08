@@ -23,7 +23,7 @@ export class GoogleMapsNg2Module {
 
     let GoogleMapsModuleInitializer = {
       provide: APP_INITIALIZER,
-      useFactory: (loader:BaseGoogleMapsApiLoader)=>{
+      useFactory: (loader: BaseGoogleMapsApiLoader) => {
         return () => loader.load();
       },
       deps: [BaseGoogleMapsApiLoader],
@@ -38,7 +38,7 @@ export class GoogleMapsNg2Module {
     if (config) {
       providers.push({provide: LAZY_LOADER_OPTIONS, useValue: config});
       providers.push({provide: BaseGoogleMapsApiLoader, useClass: LazyGoogleMapsApiLoader});
-    }else{
+    } else {
       providers.push({provide: BaseGoogleMapsApiLoader, useClass: NoopGoogleMapsApiLoader});
     }
     return {

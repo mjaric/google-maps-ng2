@@ -1,20 +1,18 @@
 {
   "compilerOptions": {
-    "noImplicitAny": true,
-    "module": "commonjs",
-    "target": "ES5",
+    "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "mapRoot": "./",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./dist",
     "sourceMap": true,
-    "declaration": true,
-    "outDir": "./dist"
-  },
-  "files": [
-    "typings/index.d.ts",
-    "src/index.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+    "target": "es5",
+    "noImplicitAny": false,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings.d.ts"
+    ]
+  }
 }

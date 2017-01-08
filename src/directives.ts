@@ -12,8 +12,8 @@ export * from './directives/google-map-polyline';
 
 // Export convenience property
 export const GOOGLE_MAPS_DIRECTIVES: any[] = [
-    GoogleMapComponent,
-    GoogleMapDirectionsDirective,
-    GoogleMapMakerDirective,
-    GoogleMapPolylineDirective
+  GoogleMapComponent,
+  GoogleMapDirectionsDirective,
+  GoogleMapMakerDirective,
+  GoogleMapPolylineDirective
 ];

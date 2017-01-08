@@ -4,11 +4,11 @@
 import {BaseGoogleMapsApiLoader} from './base-google-maps-api-loader';
 
 export class NoopGoogleMapsApiLoader implements BaseGoogleMapsApiLoader {
-    load(): Promise<void> {
-        if (!(google && google.maps)) {
-            return Promise.reject('Google Maps API not loaded on page. Make sure window.google.maps is available!');
-        } else {
-            return Promise.resolve();
-        }
+  load(): Promise<void> {
+    if (!(google && google.maps)) {
+      return Promise.reject('Google Maps API not loaded on page. Make sure window.google.maps is available!');
+    } else {
+      return Promise.resolve();
     }
+  }
 }
