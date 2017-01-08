@@ -1,6 +1,6 @@
 {
   "name": "google-maps-ng2",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "scripts": {
     "build": "tsc",
     "lint": "tslint src/**/*.ts",
