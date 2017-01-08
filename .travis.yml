@@ -4,9 +4,9 @@ node_js:
 - 4.2.1
 install:
 - npm install
-- npm tsc
 script:
-- npm tsc
+- npm run lint
+- npm run build
 deploy:
   provider: npm
   email: milan.jaric@gmail.com

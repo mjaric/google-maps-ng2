@@ -3,7 +3,7 @@
  */
 import {Directive, Input, OnDestroy, forwardRef} from '@angular/core';
 import {BaseGoogleMapComponent} from './base-google-map-component';
-import {MapsManager} from "../services/maps-manager";
+import {MapsManager} from '../services/maps-manager';
 
 
 @Directive({
@@ -22,7 +22,7 @@ export class GoogleMapPolylineDirective extends BaseGoogleMapComponent<google.ma
         .onApiLoad()
         .then(() => {
           this.proxyResolver(new google.maps.Polyline());
-        })
+        });
   }
 
   ngOnDestroy(): void {
@@ -31,5 +31,4 @@ export class GoogleMapPolylineDirective extends BaseGoogleMapComponent<google.ma
           p.setMap(null);
         });
   }
-
 }

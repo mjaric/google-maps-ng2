@@ -4,6 +4,8 @@
 import {Injectable, ElementRef} from '@angular/core';
 import {BaseGoogleMapsApiLoader} from '../loaders/base-google-maps-api-loader';
 
+export type LongLat = google.maps.LatLngLiteral | Coordinates | {latitude: number, longitude: number};
+
 const defaultCoords = <Coordinates>{
   latitude: 40.730610,
   longitude: -73.935242
@@ -35,7 +37,7 @@ export class MapsManager {
   onApiLoad(): Promise<void> {
     return this
         .loader
-        .load()
+        .load();
   }
 
   createMarker(options?: google.maps.MarkerOptions): Promise<google.maps.Marker> {
@@ -55,8 +57,8 @@ export class MapsManager {
         });
   }
 
-  getDirections(origin: google.maps.LatLngLiteral | Coordinates | {latitude: number, longitude: number},
-                destination: google.maps.LatLngLiteral | Coordinates | {latitude: number, longitude: number}): Promise<google.maps.DirectionsResult> {
+  getDirections(origin: LongLat,
+                destination: LongLat): Promise<google.maps.DirectionsResult> {
     return this
         .loader
         .load()
@@ -118,7 +120,8 @@ export class MapsManager {
     return this._maps.delete(name);
   }
 
-  createAutocomplete(input: ElementRef, options: google.maps.places.AutocompleteOptions): Promise<google.maps.places.Autocomplete> {
+  createAutocomplete(input: ElementRef,
+                     options: google.maps.places.AutocompleteOptions): Promise<google.maps.places.Autocomplete> {
     return this.loader.load().then(() => {
       return new google.maps.places.Autocomplete(input.nativeElement, options);
     });

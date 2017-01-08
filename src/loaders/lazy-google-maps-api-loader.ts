@@ -106,7 +106,7 @@ export class LazyGoogleMapsApiLoader extends BaseGoogleMapsApiLoader {
         return '';
       case ScriptLoaderProtocol.HTTP:
         return 'http:';
-      case ScriptLoaderProtocol.HTTPS:
+      // case ScriptLoaderProtocol.HTTPS:
       default:
         return 'https:';
     }
