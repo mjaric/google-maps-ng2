@@ -5,6 +5,7 @@ import {LoaderOptions, LAZY_LOADER_OPTIONS, LazyGoogleMapsApiLoader} from "./loa
 import {MapsManager} from "./services/maps-manager";
 import {BaseGoogleMapsApiLoader} from "./loaders/base-google-maps-api-loader";
 import {NoopGoogleMapsApiLoader} from "./loaders/noop-google-maps-api-loader";
+import {loaderFactory} from './factories';
 
 export * from './directives';
 export * from './services';
@@ -23,9 +24,7 @@ export class GoogleMapsNg2Module {
 
     let GoogleMapsModuleInitializer = {
       provide: APP_INITIALIZER,
-      useFactory: (loader: BaseGoogleMapsApiLoader) => {
-        return () => loader.load();
-      },
+      useFactory: loaderFactory,
       deps: [BaseGoogleMapsApiLoader],
       multi: true
     };
