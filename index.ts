@@ -1,4 +1,6 @@
-import {NgModule, ModuleWithProviders} from '@angular/core';
+import {LoaderOptions} from './src/loaders/loader-options.interface';
+import {LazyGoogleMapsApiLoader, LAZY_LOADER_OPTIONS} from './src/loaders/lazy-google-maps-api-loader';
+import {APP_INITIALIZER, Provider,  NgModule,   ModuleWithProviders} from '@angular/core';
 import {MapsManager} from "./src/services/maps-manager";
 import {BaseGoogleMapsApiLoader} from "./src/loaders/base-google-maps-api-loader";
 import {NoopGoogleMapsApiLoader} from "./src/loaders/noop-google-maps-api-loader";
@@ -30,6 +32,12 @@ export {
 
 export {LoaderOptions} from './src/loaders/loader-options.interface';
 
+
+export function MapsApiLoaderFactory(loader: BaseGoogleMapsApiLoader) {
+  console.info("INITI");
+  return loader.load();
+}
+
 @NgModule({
     declarations: [
         GoogleMapComponent,
@@ -45,13 +53,25 @@ export {LoaderOptions} from './src/loaders/loader-options.interface';
     ]
 })
 export class GoogleMapsNg2Module {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(loaderOptions: LoaderOptions): ModuleWithProviders {
         return {
             ngModule: GoogleMapsNg2Module,
             providers: [
-                {provide: MapsManager, useClass: MapsManager},
-                {provide: BaseGoogleMapsApiLoader, useClass: NoopGoogleMapsApiLoader}
-            ],
+        
+                {
+                    provide: LAZY_LOADER_OPTIONS,
+                    useValue: loaderOptions
+                },{
+                    provide: BaseGoogleMapsApiLoader,
+                    useClass: LazyGoogleMapsApiLoader
+                }, {
+                    provide: APP_INITIALIZER,
+                    useFactory: MapsApiLoaderFactory,
+                    deps: [BaseGoogleMapsApiLoader],
+                    multi: true
+                },
+                {provide: MapsManager, useClass: MapsManager}
+            ]
         };
     }
 }
