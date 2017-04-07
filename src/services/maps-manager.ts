@@ -2,7 +2,8 @@
  * Created by mjaric on 9/28/16.
  */
 import {Injectable, ElementRef} from '@angular/core';
-import {BaseGoogleMapsApiLoader} from '../loaders/base-google-maps-api-loader';
+// import {BaseGoogleMapsApiLoader} from '../loaders/base-google-maps-api-loader';
+import {LazyGoogleMapsApiLoader} from "../loaders/lazy-google-maps-api-loader";
 
 export type LongLat = google.maps.LatLngLiteral | { latitude: number, longitude: number };
 
@@ -19,14 +20,16 @@ const DEFAULT_MAP_OPTIONS: google.maps.MapOptions = {
 
 function noop() {
 }
-
+/**
+ * Service responsible to execute arbitrary functions in specific google map context
+ */
 @Injectable()
 export class MapsManager {
 
     private _maps: Map<string, google.maps.Map> = new Map<string, google.maps.Map>();
     private _browserLocationPromise: Promise<{ latitude: number, longitude: number }>;
 
-    constructor(private loader: BaseGoogleMapsApiLoader) {
+    constructor(private loader: LazyGoogleMapsApiLoader) {
         // check browser location
         this.getBrowserLocation()
             .then(noop);
@@ -89,8 +92,6 @@ export class MapsManager {
                 });
             });
     }
-
-    // todo: getDirections()
 
     createMap(el: HTMLElement, options?: google.maps.MapOptions): Promise<google.maps.Map> {
         return this.loader

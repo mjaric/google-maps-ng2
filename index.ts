@@ -1,6 +1,6 @@
 import {LoaderOptions} from './src/loaders/loader-options.interface';
 import {LazyGoogleMapsApiLoader, LAZY_LOADER_OPTIONS} from './src/loaders/lazy-google-maps-api-loader';
-import {APP_INITIALIZER, Provider,  NgModule,   ModuleWithProviders} from '@angular/core';
+import {APP_INITIALIZER, NgModule, ModuleWithProviders} from '@angular/core';
 import {MapsManager} from "./src/services/maps-manager";
 import {BaseGoogleMapsApiLoader} from "./src/loaders/base-google-maps-api-loader";
 import {NoopGoogleMapsApiLoader} from "./src/loaders/noop-google-maps-api-loader";
@@ -8,6 +8,8 @@ import {GoogleMapComponent} from "./src/directives/google-map";
 import {GoogleMapDirectionsDirective} from "./src/directives/google-map-directions";
 import {GoogleMapMakerDirective} from "./src/directives/google-map-marker";
 import {GoogleMapPolylineDirective} from "./src/directives/google-map-polyline";
+export {LoaderOptions} from './src/loaders/loader-options.interface';
+
 
 export {
     BaseGoogleMapComponent,
@@ -30,12 +32,16 @@ export {
     IZoomLevel
 } from './src/services';
 
-export {LoaderOptions} from './src/loaders/loader-options.interface';
-
-
-export function MapsApiLoaderFactory(loader: BaseGoogleMapsApiLoader) {
-  console.info("INITI");
-  return loader.load();
+/**
+ * Factory function which builds handler for application initialization
+ * @param loader instance of loader, should be passed as dependency
+ * @returns {()=>Promise<any>} function is executed by angular application initializer
+ * @constructor
+ */
+export function MapsApiLoaderFactory(loader: LazyGoogleMapsApiLoader) {
+    return function (): Promise<any> {
+        return loader.load()
+    };
 }
 
 @NgModule({
@@ -53,21 +59,45 @@ export function MapsApiLoaderFactory(loader: BaseGoogleMapsApiLoader) {
     ]
 })
 export class GoogleMapsNg2Module {
+    /**
+     * Used to register in top level or shared module in your application. Loader Options are mandatory.
+     * {@expample
+     *  import {NgModule} from '@angular/core';
+     *
+     *  @NgModule({
+     *      declarations: [...],
+     *      imports: [
+     *          ...
+     *          GoogleMapsNg2Module.forRoot(<LoaderOptions>{
+     *              apiKey: "your google maps API key
+     *              libraries: ["places", "geometry"]
+     *          }),
+     *          ...
+     *     ],
+     *     // optional, you can import module like below if your module depends only on component and directives
+     *     exports: [
+     *      GoogleMapsNg2Module
+     *     ]
+     *  })
+     *  export class MySharedModule { }
+     * }
+     *
+     * @param loaderOptions
+     * @returns {ModuleWithProviders}
+     */
     static forRoot(loaderOptions: LoaderOptions): ModuleWithProviders {
         return {
             ngModule: GoogleMapsNg2Module,
             providers: [
-        
                 {
                     provide: LAZY_LOADER_OPTIONS,
                     useValue: loaderOptions
-                },{
-                    provide: BaseGoogleMapsApiLoader,
-                    useClass: LazyGoogleMapsApiLoader
-                }, {
+                },
+                LazyGoogleMapsApiLoader
+                , {
                     provide: APP_INITIALIZER,
                     useFactory: MapsApiLoaderFactory,
-                    deps: [BaseGoogleMapsApiLoader],
+                    deps: [LazyGoogleMapsApiLoader],
                     multi: true
                 },
                 {provide: MapsManager, useClass: MapsManager}

@@ -4,6 +4,7 @@
     "declaration": true,
     "stripInternal": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
     "module": "es2015",
@@ -18,6 +19,7 @@
     "inlineSources": true,
     "target": "es5",
     "skipLibCheck": true,
+    "suppressImplicitAnyIndexErrors": true,
     "lib": [
       "es2015",
       "dom"
@@ -27,6 +29,7 @@
     "index.ts"
   ],
   "angularCompilerOptions": {
+    "genDir": "dist",
     "strictMetadataEmit": true,
     "skipTemplateCodegen": true
   }
