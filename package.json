@@ -1,6 +1,6 @@
 {
   "name": "google-maps-ng2",
-  "version": "0.6.10",
+  "version": "1.0.0",
   "scripts": {
     "transpile": "ngc",
     "package": "rollup -c",
@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/mjaric/google-maps-ng2/issues"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/bundle/google-maps-ng2.udm.js",
   "module": "index.js",
   "typings": "./dist/index.d.ts",
   "dependencies": {},
