@@ -1,6 +1,6 @@
 {
   "name": "google-maps-ng2",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "scripts": {
     "transpile": "ngc",
     "package": "rollup -c",
