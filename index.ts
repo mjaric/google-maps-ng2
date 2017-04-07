@@ -1,11 +1,11 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
-import {MapsManager} from "./services/maps-manager";
-import {BaseGoogleMapsApiLoader} from "./loaders/base-google-maps-api-loader";
-import {NoopGoogleMapsApiLoader} from "./loaders/noop-google-maps-api-loader";
-import {GoogleMapComponent} from "./directives/google-map";
-import {GoogleMapDirectionsDirective} from "./directives/google-map-directions";
-import {GoogleMapMakerDirective} from "./directives/google-map-marker";
-import {GoogleMapPolylineDirective} from "./directives/google-map-polyline";
+import {MapsManager} from "./src/services/maps-manager";
+import {BaseGoogleMapsApiLoader} from "./src/loaders/base-google-maps-api-loader";
+import {NoopGoogleMapsApiLoader} from "./src/loaders/noop-google-maps-api-loader";
+import {GoogleMapComponent} from "./src/directives/google-map";
+import {GoogleMapDirectionsDirective} from "./src/directives/google-map-directions";
+import {GoogleMapMakerDirective} from "./src/directives/google-map-marker";
+import {GoogleMapPolylineDirective} from "./src/directives/google-map-polyline";
 
 export {
     BaseGoogleMapComponent,
@@ -14,7 +14,7 @@ export {
     GoogleMapMakerDirective,
     GoogleMapPolylineDirective,
     IOptionalSetMapMethod
-} from './directives';
+} from './src/directives';
 export {
     BaseGoogleMapsApiLoader,
     LAZY_LOADER_OPTIONS,
@@ -26,9 +26,9 @@ export {
     IAnimation,
     ZoomLevel,
     IZoomLevel
-} from './services';
+} from './src/services';
 
-export {LoaderOptions} from './loaders/loader-options.interface';
+export {LoaderOptions} from './src/loaders/loader-options.interface';
 
 @NgModule({
     declarations: [
