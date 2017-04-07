@@ -4,18 +4,21 @@ import {LoaderOptions, LAZY_LOADER_OPTIONS, LazyGoogleMapsApiLoader} from "./loa
 import {MapsManager} from "./services/maps-manager";
 import {BaseGoogleMapsApiLoader} from "./loaders/base-google-maps-api-loader";
 import {NoopGoogleMapsApiLoader} from "./loaders/noop-google-maps-api-loader";
-import {MapsApiLoaderFactory} from "./loaders/maps-api-app-initializer";
 
 
-const GoogleMapsModuleInitializer = {
-  provide: APP_INITIALIZER,
-  useFactory: MapsApiLoaderFactory,
-  deps: [BaseGoogleMapsApiLoader],
-  multi: true
-};
+export function MapsApiLoaderFactory(loader: BaseGoogleMapsApiLoader): () => Promise<any>{
+  return function () {
+    return loader.load();
+  }
+}
 
 const providers: Provider[] = [
-  GoogleMapsModuleInitializer,
+  {
+    provide: APP_INITIALIZER,
+    useFactory: MapsApiLoaderFactory,
+    deps: [BaseGoogleMapsApiLoader],
+    multi: true
+  },
   {provide: MapsManager, useClass: MapsManager}
 ];
 
