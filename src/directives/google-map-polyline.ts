@@ -7,28 +7,29 @@ import {MapsManager} from '../services/maps-manager';
 
 
 @Directive({
-  selector: 'google-map-polyline',
-  providers: [{provide: BaseGoogleMapComponent, useExisting: forwardRef(() => GoogleMapPolylineDirective)}]
+    selector: 'google-map-polyline',
+    providers: [{provide: BaseGoogleMapComponent, useExisting: forwardRef(() => GoogleMapPolylineDirective)}]
 })
 export class GoogleMapPolylineDirective extends BaseGoogleMapComponent<google.maps.Polyline> implements OnDestroy {
-  @Input()
-  set options(value: google.maps.PolylineOptions) {
-    this.proxy.then(o => o.setOptions(value));
-  }
+    @Input()
+    set options(value: google.maps.PolylineOptions) {
+        this.proxy.then(o => o.setOptions(value));
+    }
 
-  constructor(mapsManager: MapsManager) {
-    super();
-    mapsManager
-        .onApiLoad()
-        .then(() => {
-          this.proxyResolver(new google.maps.Polyline());
-        });
-  }
+    constructor(mapsManager: MapsManager) {
+        super();
+        mapsManager
+            .onApiLoad()
+            .then(() => {
+                this.proxyResolver(new google.maps.Polyline());
+            });
+    }
 
-  ngOnDestroy(): void {
-    this.proxy
-        .then(p => {
-          p.setMap(null);
-        });
-  }
+    ngOnDestroy(): void {
+        this.proxy
+            .then(p => {
+                p.setMap(null);
+                p.setPath([]);
+            });
+    }
 }

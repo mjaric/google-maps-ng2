@@ -4,9 +4,9 @@ npm-debug.log
 
 # TypeScript
 *.js
+!rollup.config.js
 *.map
 *.d.ts
-
 # JetBrains
 .idea
 .project

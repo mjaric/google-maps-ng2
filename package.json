@@ -2,9 +2,11 @@
   "name": "google-maps-ng2",
   "version": "0.6.10",
   "scripts": {
-    "build": "tsc",
+    "transpile": "ngc",
+    "package": "rollup -c",
+    "minify": "uglifyjs dist/bundles/amazing.umd.js --screw-ie8 --compress --mangle --comments --output dist/bundles/amazing.umd.min.js",
+    "build": "npm run transpile && npm run package && npm run minify",
     "lint": "tslint src/**/*.ts",
-    "prepublish": "tsc",
     "tsc": "tsc"
   },
   "repository": {
@@ -29,18 +31,22 @@
     "url": "https://github.com/mjaric/google-maps-ng2/issues"
   },
   "main": "./dist/index.js",
+  "module": "index.js",
   "typings": "./dist/index.d.ts",
   "dependencies": {},
   "devDependencies": {
-    "@angular/common": "^2.1.2",
-    "@angular/compiler": "^2.1.2",
-    "@angular/core": "^2.1.2",
+    "@angular/common": "^2.4.10",
+    "@angular/compiler": "^2.4.10",
+    "@angular/compiler-cli": "^2.4.10",
+    "@angular/core": "^2.4.10",
     "@types/googlemaps": "^3.25.42",
     "codelyzer": "^2.1.1",
-    "rxjs": "^5.0.0-beta.12",
-    "tslint": "^3.15.1",
-    "typescript": "^2.2.2",
-    "zone.js": "0.6.23"
+    "rollup": "^0.41.6",
+    "rxjs": "^5.0.1",
+    "tslint": "^4.0.0",
+    "typescript": "2.2.1",
+    "uglify-js": "^2.8.21",
+    "zone.js": "^0.7.2"
   },
   "engines": {
     "node": ">=0.8.0"
