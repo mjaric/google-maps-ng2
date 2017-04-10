@@ -33,9 +33,10 @@ export class GoogleMapComponent implements OnDestroy, OnInit, AfterContentInit {
     private _mapResolver: (map: google.maps.Map) => void;
     private _mapBackgroundColor: string;
 
-    @ContentChildren(forwardRef(() => BaseGoogleMapComponent), {})
-    private _mapComponents: QueryList<BaseGoogleMapComponent<IOptionalSetMapMethod>>;
     private _mapComponentsSubscriptions: Subscription;
+
+    @ContentChildren(forwardRef(() => BaseGoogleMapComponent), {})
+    public mapComponents: QueryList<BaseGoogleMapComponent<IOptionalSetMapMethod>>;
 
     /**
      * Should map auto resize bounds to current set of markers
@@ -228,7 +229,7 @@ export class GoogleMapComponent implements OnDestroy, OnInit, AfterContentInit {
     }
 
     ngAfterContentInit(): void {
-        this._mapComponentsSubscriptions = this._mapComponents.changes.subscribe(() => {
+        this._mapComponentsSubscriptions = this.mapComponents.changes.subscribe(() => {
             this.attachComponentsToMap();
         });
 
@@ -242,7 +243,7 @@ export class GoogleMapComponent implements OnDestroy, OnInit, AfterContentInit {
 
     private attachComponentsToMap(): void {
         this._map.then(map => {
-            this._mapComponents
+            this.mapComponents
                 .filter(v => !v.hasMapComponent())
                 .forEach(v => {
                     v.setMapComponent(this, map);
