@@ -1,5 +1,5 @@
 export const ScriptLoaderProtocol = {
-    AUTO: "auto",
-    HTTP: "http",
-    HTTPS: "https"
+    AUTO: 'auto',
+    HTTP: 'http',
+    HTTPS: 'https'
 };

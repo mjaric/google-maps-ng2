@@ -3,9 +3,9 @@
  */
 import { Injectable, ElementRef } from '@angular/core';
 // import {BaseGoogleMapsApiLoader} from '../loaders/base-google-maps-api-loader';
-import { LazyGoogleMapsApiLoader } from "../loaders/lazy-google-maps-api-loader";
+import { LazyGoogleMapsApiLoader } from '../loaders/lazy-google-maps-api-loader';
 
-export type LongLat = google.maps.LatLngLiteral | { latitude: number, longitude: number };
+import { LongLat } from './long-lat.type';
 
 const DefaultCoords: { latitude: number, longitude: number } = {
     latitude: 40.730610,

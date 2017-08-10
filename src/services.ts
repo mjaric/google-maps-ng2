@@ -1,23 +1,18 @@
 // Import all services
-import {MapsManager} from './services/maps-manager';
-import {BaseGoogleMapsApiLoader} from './loaders/base-google-maps-api-loader';
+import { BaseGoogleMapsApiLoader } from './loaders/base-google-maps-api-loader';
 import {
   LazyGoogleMapsApiLoader,
   LAZY_LOADER_OPTIONS,
 } from './loaders/lazy-google-maps-api-loader';
-import {NoopGoogleMapsApiLoader} from "./loaders/noop-google-maps-api-loader";
 
 // Export all services
-export {MapsManager, LongLat} from './services/maps-manager';
+export { MapsManager } from './services/maps-manager';
+export { LongLat } from './services/long-lat.type';
 
-export interface IZoomLevel {
-  World: number,
-  Continent: number,
-  City: number,
-  Streets: number,
-  Buildings: number
-}
-
+import {IZoomLevel} from './services/zoom-level.type';
+export {IZoomLevel};
+import {IAnimation} from './services/zoom-level.type';
+export {IAnimation}
 /**
  * The following list shows the approximate level of detail
  * you can expect to see at each zoom level
@@ -30,10 +25,7 @@ export const ZoomLevel: IZoomLevel = {
   Buildings: 20
 };
 
-export interface IAnimation {
-  BOUNCE: number,
-  DROP: number
-}
+
 
 /**
  * Animations that can be played on a marker.
@@ -43,15 +35,15 @@ export const Animation: IAnimation = {
   /**
    * Marker bounces until animation is stopped.
    */
-  BOUNCE:1,
+  BOUNCE: 1,
   /**
    * Marker falls from the top of the map ending with a small bounce.
    */
   DROP: 2
 };
 
-export {BaseGoogleMapsApiLoader, LazyGoogleMapsApiLoader, LAZY_LOADER_OPTIONS};
-export {NoopGoogleMapsApiLoader} from './loaders/noop-google-maps-api-loader';
+export { BaseGoogleMapsApiLoader, LazyGoogleMapsApiLoader, LAZY_LOADER_OPTIONS };
+export { NoopGoogleMapsApiLoader } from './loaders/noop-google-maps-api-loader';
 
 
 

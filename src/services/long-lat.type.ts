@@ -1,0 +1,1 @@
+export type LongLat = google.maps.LatLngLiteral | { latitude: number, longitude: number };
