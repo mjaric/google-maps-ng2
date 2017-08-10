@@ -1,9 +1,9 @@
 /**
  * Created by mjaric on 9/28/16.
  */
-import {Injectable, ElementRef} from '@angular/core';
+import { Injectable, ElementRef } from '@angular/core';
 // import {BaseGoogleMapsApiLoader} from '../loaders/base-google-maps-api-loader';
-import {LazyGoogleMapsApiLoader} from "../loaders/lazy-google-maps-api-loader";
+import { LazyGoogleMapsApiLoader } from "../loaders/lazy-google-maps-api-loader";
 
 export type LongLat = google.maps.LatLngLiteral | { latitude: number, longitude: number };
 
@@ -56,20 +56,18 @@ export class MapsManager {
         return this.loader
             .load()
             .then(() => {
-                return new Promise((resolve) => {
-                    resolve(new google.maps.DirectionsRenderer(options));
-                });
+                return new google.maps.DirectionsRenderer(options);
             });
     }
 
     getDirections(origin: LongLat,
-                  destination: LongLat): Promise<google.maps.DirectionsResult> {
+        destination: LongLat): Promise<google.maps.DirectionsResult> {
         return this
             .loader
             .load()
             .then(() => {
                 let svc = new google.maps.DirectionsService();
-                return new Promise((resolve, reject) => {
+                return new Promise<google.maps.DirectionsResult>((resolve, reject) => {
                     let request = {
                         origin: new google.maps.LatLng(
                             (<google.maps.LatLngLiteral>origin).lat || (<Coordinates>origin).latitude,
@@ -85,8 +83,8 @@ export class MapsManager {
                         if (status === google.maps.DirectionsStatus.OK) {
                             resolve(result);
                         } else {
-                            console.error({message: 'fail to get directions', status, result});
-                            reject({status, result});
+                            console.error({ message: 'fail to get directions', status, result });
+                            reject({ status, result });
                         }
                     });
                 });
@@ -112,7 +110,7 @@ export class MapsManager {
     getMap(name: string): Promise<google.maps.Map> {
         return this.loader
             .load()
-            .then(() => this._maps.get(name));
+            .then(() => <google.maps.Map>this._maps.get(name));
     }
 
     addMap(name: string, map: google.maps.Map): void {
@@ -124,15 +122,15 @@ export class MapsManager {
     }
 
     createAutocomplete(input: ElementRef,
-                       options: google.maps.places.AutocompleteOptions): Promise<google.maps.places.Autocomplete> {
+        options: google.maps.places.AutocompleteOptions): Promise<google.maps.places.Autocomplete> {
         return this.loader.load().then(() => {
             return new google.maps.places.Autocomplete(input.nativeElement, options);
         });
     }
 
-    getBrowserLocation(): Promise<Coordinates> {
+    getBrowserLocation(): Promise<Coordinates | { longitude: number, latitude: number }> {
         if (this._browserLocationPromise) {
-            return this._browserLocationPromise;
+            return (this._browserLocationPromise);
         }
 
         return this._browserLocationPromise = new Promise<{ latitude: number, longitude: number }>((resolve) => {
@@ -162,7 +160,8 @@ export class MapsManager {
 
 
                 if (markers && markers.length > 1) {
-                    let bounds: google.maps.LatLngBounds = new google.maps.LatLngBounds(new google.maps.LatLng(markers[0].latitude, markers[0].longitude));
+                    let latLng = new google.maps.LatLng(markers[0].latitude, markers[0].longitude);
+                    let bounds: google.maps.LatLngBounds = new google.maps.LatLngBounds(latLng);
                     for (let i = 1; i < markers.length; i++) {
                         let marker = markers[i];
                         bounds.extend(new google.maps.LatLng(marker.latitude, marker.longitude));
@@ -170,7 +169,7 @@ export class MapsManager {
                     resolve(bounds);
                     return;
                 }
-                reject({error: 'There is no markers in markers array', centerTo: DefaultCoords});
+                reject({ error: 'There is no markers in markers array', centerTo: DefaultCoords });
                 return;
 
             });

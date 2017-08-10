@@ -15,7 +15,8 @@ import {
 import {Subscription} from 'rxjs/Subscription';
 
 import {MapsManager} from '../services/maps-manager';
-import {BaseGoogleMapComponent, IOptionalSetMapMethod} from './base-google-map-component';
+import {BaseGoogleMapComponent} from './base-google-map-component';
+import {IOptionalSetMapMethod} from './optional-set-map-method.interface';
 
 
 @Component({

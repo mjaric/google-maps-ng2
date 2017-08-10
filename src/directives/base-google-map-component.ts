@@ -1,11 +1,10 @@
+import {IOptionalSetMapMethod} from './optional-set-map-method.interface';
 import {GoogleMapComponent} from './google-map';
 /**
  * Created by mjaric on 10/3/16.
  */
 
-export interface IOptionalSetMapMethod {
-    setMap?(map: google.maps.Map): void;
-}
+
 
 export abstract class BaseGoogleMapComponent<T extends IOptionalSetMapMethod> {
 
