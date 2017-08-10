@@ -1,13 +1,14 @@
 {
   "name": "google-maps-ng2",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "scripts": {
     "transpile": "ngc",
     "package": "rollup -c",
     "minify": "uglifyjs dist/bundles/google-maps-ng2.umd.js --screw-ie8 --compress --mangle --comments --output dist/bundles/google-maps-ng2.umd.min.js",
     "build": "npm run transpile && npm run package && npm run minify",
     "lint": "tslint src/**/*.ts",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "release": "npm run tsc && npm run package && npm publish"
   },
   "repository": {
     "type": "git",
