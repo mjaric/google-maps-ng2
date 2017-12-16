@@ -1,15 +1,17 @@
-import {LoaderOptions} from './src/loaders/loader-options.interface';
-import {LazyGoogleMapsApiLoader, LAZY_LOADER_OPTIONS} from './src/loaders/lazy-google-maps-api-loader';
-import {APP_INITIALIZER, NgModule, ModuleWithProviders} from '@angular/core';
-import {MapsManager} from "./src/services/maps-manager";
-import {BaseGoogleMapsApiLoader} from "./src/loaders/base-google-maps-api-loader";
-import {NoopGoogleMapsApiLoader} from "./src/loaders/noop-google-maps-api-loader";
-import {GoogleMapComponent} from "./src/directives/google-map";
-import {GoogleMapDirectionsDirective} from "./src/directives/google-map-directions";
-import {GoogleMapMakerDirective} from "./src/directives/google-map-marker";
-import {GoogleMapPolylineDirective} from "./src/directives/google-map-polyline";
-export {LoaderOptions} from './src/loaders/loader-options.interface';
-
+import { LoaderOptions } from './src/loaders/loader-options.interface';
+import {
+    LazyGoogleMapsApiLoader,
+    LAZY_LOADER_OPTIONS
+} from './src/loaders/lazy-google-maps-api-loader';
+import { APP_INITIALIZER, NgModule, ModuleWithProviders } from '@angular/core';
+import { MapsManager } from './src/services/maps-manager';
+import { BaseGoogleMapsApiLoader } from './src/loaders/base-google-maps-api-loader';
+import { NoopGoogleMapsApiLoader } from './src/loaders/noop-google-maps-api-loader';
+import { GoogleMapComponent } from './src/directives/google-map';
+import { GoogleMapDirectionsDirective } from './src/directives/google-map-directions';
+import { GoogleMapMakerDirective } from './src/directives/google-map-marker';
+import { GoogleMapPolylineDirective } from './src/directives/google-map-polyline';
+export { LoaderOptions } from './src/loaders/loader-options.interface';
 
 export {
     BaseGoogleMapComponent,
@@ -39,9 +41,11 @@ export {
  * @constructor
  */
 export function MapsApiLoaderFactory(loader: LazyGoogleMapsApiLoader) {
-    return function (): Promise<any> {
-        return loader.load()
-    };
+    return goLoad;
+
+    function goLoad(): Promise<any> {
+        return loader.load();
+    }
 }
 
 @NgModule({
@@ -93,14 +97,14 @@ export class GoogleMapsNg2Module {
                     provide: LAZY_LOADER_OPTIONS,
                     useValue: loaderOptions
                 },
-                LazyGoogleMapsApiLoader
-                , {
+                LazyGoogleMapsApiLoader,
+                {
                     provide: APP_INITIALIZER,
                     useFactory: MapsApiLoaderFactory,
                     deps: [LazyGoogleMapsApiLoader],
                     multi: true
                 },
-                {provide: MapsManager, useClass: MapsManager}
+                { provide: MapsManager, useClass: MapsManager }
             ]
         };
     }

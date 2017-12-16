@@ -1,7 +1,7 @@
 /**
  * Created by mjaric on 9/28/16.
  */
-import {Injectable, Inject, OpaqueToken} from '@angular/core';
+import {Injectable, Inject, InjectionToken} from '@angular/core';
 import {BaseGoogleMapsApiLoader} from './base-google-maps-api-loader';
 import {LoaderOptions} from "./loader-options.interface";
 import {ScriptLoaderProtocol} from "./script-loader-protocol";
@@ -10,7 +10,7 @@ import {ScriptLoaderProtocol} from "./script-loader-protocol";
 
 
 
-export const LAZY_LOADER_OPTIONS = new OpaqueToken('_gmapsng2.LazyLoaderGoogleMapsApiOptions');
+export const LAZY_LOADER_OPTIONS = new InjectionToken('_gmapsng2.LazyLoaderGoogleMapsApiOptions');
 export const LOADER_OPTIONS_DEFAULT: LoaderOptions = {
     apiVersion: 3,
     protocol: ScriptLoaderProtocol.AUTO,
