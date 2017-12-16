@@ -1,5 +1,5 @@
 # google-maps-ng2
-
+[![Build Status](https://travis-ci.org/mjaric/google-maps-ng2.svg?branch=master)](https://travis-ci.org/mjaric/google-maps-ng2)
 ## Installation
 
 To install this library, run:
