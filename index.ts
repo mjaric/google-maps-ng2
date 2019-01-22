@@ -5,8 +5,6 @@ import {
 } from './src/loaders/lazy-google-maps-api-loader';
 import { APP_INITIALIZER, NgModule, ModuleWithProviders } from '@angular/core';
 import { MapsManager } from './src/services/maps-manager';
-import { BaseGoogleMapsApiLoader } from './src/loaders/base-google-maps-api-loader';
-import { NoopGoogleMapsApiLoader } from './src/loaders/noop-google-maps-api-loader';
 import { GoogleMapComponent } from './src/directives/google-map';
 import { GoogleMapDirectionsDirective } from './src/directives/google-map-directions';
 import { GoogleMapMakerDirective } from './src/directives/google-map-marker';
